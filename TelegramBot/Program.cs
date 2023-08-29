@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
+using TelegramBot.Application.Services;
 using TelegramBot.Application.Services.Handlers;
 using TelegramBot.Core.Data;
-using TelegramBot.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 

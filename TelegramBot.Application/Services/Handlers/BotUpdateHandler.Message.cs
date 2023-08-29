@@ -6,14 +6,15 @@ namespace TelegramBot.Application.Services.Handlers;
 
 public partial class BotUpdateHandler
 {
-    public async Task HandlerMessageAsync(
+    public async Task MessageHandlerAsync(
         ITelegramBotClient botClient,
         Message? update,
-        CancellationToken cancellationToken )
+        CancellationToken cancellationToken,
+        bool isEdited = false)
     {
         var handlers = update.Type switch
         {
-            MessageType.Text => TextProcessing(botClient, update, cancellationToken),
+            MessageType.Text => TextProcessing(botClient, update, cancellationToken,isEdited),
             MessageType.Photo => throw new NotImplementedException(),
             MessageType.Audio => throw new NotImplementedException(),
             MessageType.Video => throw new NotImplementedException(),
@@ -27,8 +28,16 @@ public partial class BotUpdateHandler
             MessageType.ChatMemberLeft => throw new NotImplementedException(),
             MessageType.ChatTitleChanged => throw new NotImplementedException(),
             MessageType.ChatPhotoChanged => throw new NotImplementedException(),
-
             MessageType.Unknown => throw new NotImplementedException()
         };
+
+        try
+        {
+            await handlers;
+        }
+        catch (Exception e)
+        {
+            await HandlePollingErrorAsync(botClient,e,cancellationToken);
+        }
     }
 }

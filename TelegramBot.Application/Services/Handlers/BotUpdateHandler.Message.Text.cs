@@ -1,4 +1,5 @@
-﻿using Telegram.Bot.Types;
+﻿using Microsoft.Extensions.Logging;
+using Telegram.Bot.Types;
 using Telegram.Bot;
 
 namespace TelegramBot.Application.Services.Handlers;
@@ -8,12 +9,28 @@ public partial class BotUpdateHandler
     public async Task TextProcessing(
         ITelegramBotClient botClient,
         Message? update,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        bool isEdited)
     {
         if(update is null)
             throw new ArgumentNullException(nameof(update));
         var chatId = update.Chat.Id;
 
-       await  botClient.SendTextMessageAsync(chatId,"Salom");
+        if (isEdited)
+        {
+          await  botClient.SendTextMessageAsync(
+            chatId,
+            $"Siz quyidagi habarni o'zgartirdingiz :{update.Text} {update.MessageId}",
+            cancellationToken:cancellationToken);
+        }
+        else
+        {
+            await  botClient.SendTextMessageAsync(
+                chatId,
+                $"Salom :{update.From?.Username}",
+                cancellationToken:cancellationToken);
+        }
+        _logger.LogInformation($"Bot Text habarni jo'natdi {update.From?.Username}");
+
     }
 }

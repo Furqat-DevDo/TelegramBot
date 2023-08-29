@@ -1,10 +1,10 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using System.Text.Json;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System.Text.Json;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
 
-namespace TelegramBot.Services;
+namespace TelegramBot.Application.Services;
 
 public class BotBackgroundService : BackgroundService
 {
