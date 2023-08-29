@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TelegramBot.Core\TelegramBot.Core.csproj" />
+  </ItemGroup>
+
 </Project>
