@@ -23,23 +23,27 @@ public partial class BotUpdateHandler
             await LanguageHandler(botClient, update, cancellationToken);
             return;
         }
-            
-        var chatId = update.Chat.Id;
 
-        if (isEdited)
+        if (update is not  null)
         {
-            await botClient.SendTextMessageAsync(
-              chatId,
-              $"Siz quyidagi habarni o'zgartirdingiz :{update.Text} {update.MessageId}",
-              cancellationToken: cancellationToken);
+            var chatId = update.Chat.Id;
+
+            if (isEdited)
+            {
+                await botClient.SendTextMessageAsync(
+                    chatId,
+                    $"Siz quyidagi habarni o'zgartirdingiz :{update.Text} {update.MessageId}",
+                    cancellationToken: cancellationToken);
+            }
+            else
+            {
+                await botClient.SendTextMessageAsync(
+                    chatId,
+                    $"Salom :{update.From?.Username}",
+                    cancellationToken: cancellationToken);
+            }
         }
-        else
-        {
-            await botClient.SendTextMessageAsync(
-                chatId,
-                $"Salom :{update.From?.Username}",
-                cancellationToken: cancellationToken);
-        }
-        _logger.LogInformation($"Bot Text habarni jo'natdi {update.From?.Username}");
+
+        _logger.LogInformation($"Bot Text habarni jo'natdi {update?.From?.Username}");
     }
 }

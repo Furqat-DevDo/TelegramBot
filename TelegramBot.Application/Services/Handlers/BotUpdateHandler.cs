@@ -46,7 +46,8 @@ public partial class BotUpdateHandler : IUpdateHandler
             UpdateType.MyChatMember => throw new NotImplementedException(),
             UpdateType.ChatMember => throw new NotImplementedException(),
             UpdateType.ChatJoinRequest => throw new NotImplementedException(),
-            UpdateType.Unknown => throw new NotImplementedException()
+            UpdateType.Unknown => throw new NotImplementedException(),
+            _ => throw new ArgumentOutOfRangeException()
         };
 
         try

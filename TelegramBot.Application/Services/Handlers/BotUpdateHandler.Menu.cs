@@ -8,7 +8,7 @@ public partial class BotUpdateHandler
 {
     public async Task MenuBotUz(
         ITelegramBotClient bot, 
-        CallbackQuery message,
+        CallbackQuery? message,
         CancellationToken cancellation)
     {
 
@@ -40,7 +40,7 @@ public partial class BotUpdateHandler
 
     public async Task MenuBotRu(
         ITelegramBotClient bot, 
-        CallbackQuery message,
+        CallbackQuery? message,
         CancellationToken cancellation)
     {
 
@@ -72,7 +72,7 @@ public partial class BotUpdateHandler
 
     public async Task MenuBotEng(
         ITelegramBotClient bot,
-        CallbackQuery message,
+        CallbackQuery? message,
         CancellationToken cancellation)
     {
 

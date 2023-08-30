@@ -12,32 +12,36 @@ public partial class BotUpdateHandler
         CancellationToken cancellationToken,
         bool isEdited = false)
     {
-        var handlers = update.Type switch
+        if (update is not  null)
         {
-            MessageType.Text => TextProcessing(botClient, update, cancellationToken,isEdited),
-            MessageType.Photo => throw new NotImplementedException(),
-            MessageType.Audio => throw new NotImplementedException(),
-            MessageType.Video => throw new NotImplementedException(),
-            MessageType.Voice => throw new NotImplementedException(),
-            MessageType.Document => throw new NotImplementedException(),
-            MessageType.Sticker => throw new NotImplementedException(),
-            MessageType.Location => throw new NotImplementedException(),
-            MessageType.Contact => throw new NotImplementedException(),
-            MessageType.Venue => throw new NotImplementedException(),
-            MessageType.ChatMembersAdded => throw new NotImplementedException(),
-            MessageType.ChatMemberLeft => throw new NotImplementedException(),
-            MessageType.ChatTitleChanged => throw new NotImplementedException(),
-            MessageType.ChatPhotoChanged => throw new NotImplementedException(),
-            MessageType.Unknown => throw new NotImplementedException()
-        };
+            var handlers = update.Type switch
+            {
+                MessageType.Text => TextProcessing(botClient, update, cancellationToken,isEdited),
+                MessageType.Photo => throw new NotImplementedException(),
+                MessageType.Audio => throw new NotImplementedException(),
+                MessageType.Video => throw new NotImplementedException(),
+                MessageType.Voice => throw new NotImplementedException(),
+                MessageType.Document => throw new NotImplementedException(),
+                MessageType.Sticker => throw new NotImplementedException(),
+                MessageType.Location => throw new NotImplementedException(),
+                MessageType.Contact => throw new NotImplementedException(),
+                MessageType.Venue => throw new NotImplementedException(),
+                MessageType.ChatMembersAdded => throw new NotImplementedException(),
+                MessageType.ChatMemberLeft => throw new NotImplementedException(),
+                MessageType.ChatTitleChanged => throw new NotImplementedException(),
+                MessageType.ChatPhotoChanged => throw new NotImplementedException(),
+                MessageType.Unknown => throw new NotImplementedException(),
+                _ => throw new ArgumentOutOfRangeException()
+            };
 
-        try
-        {
-            await handlers;
-        }
-        catch (Exception e)
-        {
-            await HandlePollingErrorAsync(botClient,e,cancellationToken);
+            try
+            {
+                await handlers;
+            }
+            catch (Exception e)
+            {
+                await HandlePollingErrorAsync(botClient,e,cancellationToken);
+            }
         }
     }
 }

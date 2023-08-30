@@ -22,11 +22,12 @@ public partial class BotUpdateHandler
                 },
             });
 
-        await bot.SendTextMessageAsync(
-            chatId: message.Chat.Id,
-            text: "Tilni tanlang:\nВыберите язык:\nChoose language:",
-            replyMarkup: inlineKeyboard,
-            cancellationToken: cancellation
-        );
+        if (message is not  null)
+            await bot.SendTextMessageAsync(
+                chatId: message.Chat.Id,
+                text: "Tilni tanlang:\nВыберите язык:\nChoose language:",
+                replyMarkup: inlineKeyboard,
+                cancellationToken: cancellation
+            );
     }
 }
