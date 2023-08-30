@@ -1,4 +1,4 @@
-﻿namespace TelegramBot.Models.Response
+﻿namespace TelegramBot.Application.Models.Response
 {
     public class Dto
     {

@@ -1,13 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Collections;
-using Telegram.Bot.Requests.Abstractions;
+using TelegramBot.Application.Extantions;
+using TelegramBot.Application.Models.Request;
+using TelegramBot.Application.Models.Response;
+using TelegramBot.Application.Services.Interface;
 using TelegramBot.Core.Data;
-using TelegramBot.Extantions;
-using TelegramBot.Models.Request;
-using TelegramBot.Models.Response;
-using TelegramBot.Services.Interface;
 
-namespace TelegramBot.Services;
+namespace TelegramBot.Application.Services;
 
 public class StorageService : IStorageService
 {

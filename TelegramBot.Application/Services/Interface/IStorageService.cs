@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using TelegramBot.Models.Request;
-using TelegramBot.Models.Response;
+﻿using TelegramBot.Application.Models.Request;
+using TelegramBot.Application.Models.Response;
 
-namespace TelegramBot.Services.Interface;
+namespace TelegramBot.Application.Services.Interface;
 
 public interface IStorageService
 {

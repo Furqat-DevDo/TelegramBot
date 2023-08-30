@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Telegram.Bot.Types;
+using TelegramBot.Application.Models.Request;
+using TelegramBot.Application.Models.Response;
 using TelegramBot.Core.Entities;
-using TelegramBot.Models.Request;
-using TelegramBot.Models.Response;
+using User = TelegramBot.Core.Entities.User;
 
-namespace TelegramBot.Extantions
+namespace TelegramBot.Application.Extantions
 {
     public static class UserMapper
     {

@@ -1,4 +1,4 @@
-﻿namespace TelegramBot.Models.Request;
+﻿namespace TelegramBot.Application.Models.Request;
 
 public class UpdateUserDto
 {

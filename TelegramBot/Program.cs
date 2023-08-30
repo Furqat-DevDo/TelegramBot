@@ -2,8 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
+using TelegramBot.Application.Services.Handlers;
 using TelegramBot.Core.Data;
-using TelegramBot.Services.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
