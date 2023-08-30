@@ -12,25 +12,38 @@ public partial class BotUpdateHandler
         CancellationToken cancellationToken,
         bool isEdited)
     {
-        if(update is null)
+        if (update is null)
             throw new ArgumentNullException(nameof(update));
-        var chatId = update.Chat.Id;
 
-        if (isEdited)
+        if (update?.Text == "/start" || 
+            update?.Text == "Tilni o'zgartirsh" ||
+            update?.Text == "Изменить язык" ||
+            update?.Text == "Change language")
         {
-          await  botClient.SendTextMessageAsync(
-            chatId,
-            $"Siz quyidagi habarni o'zgartirdingiz :{update.Text} {update.MessageId}",
-            cancellationToken:cancellationToken);
+            await LanguageHandler(botClient, update, cancellationToken);
+            return;
         }
-        else
-        {
-            await  botClient.SendTextMessageAsync(
-                chatId,
-                $"Salom :{update.From?.Username}",
-                cancellationToken:cancellationToken);
-        }
-        _logger.LogInformation($"Bot Text habarni jo'natdi {update.From?.Username}");
 
+        if (update is not  null)
+        {
+            var chatId = update.Chat.Id;
+
+            if (isEdited)
+            {
+                await botClient.SendTextMessageAsync(
+                    chatId,
+                    $"Siz quyidagi habarni o'zgartirdingiz :{update.Text} {update.MessageId}",
+                    cancellationToken: cancellationToken);
+            }
+            else
+            {
+                await botClient.SendTextMessageAsync(
+                    chatId,
+                    $"Salom :{update.From?.Username}",
+                    cancellationToken: cancellationToken);
+            }
+        }
+
+        _logger.LogInformation($"Bot Text habarni jo'natdi {update?.From?.Username}");
     }
 }

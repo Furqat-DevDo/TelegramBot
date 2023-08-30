@@ -23,7 +23,7 @@ public partial class BotUpdateHandler : IUpdateHandler
         return Task.CompletedTask;
     }
 
-    public Task HandleUpdateAsync(
+    public async Task HandleUpdateAsync(
         ITelegramBotClient botClient, 
         Update update,
         CancellationToken cancellationToken)
@@ -35,7 +35,7 @@ public partial class BotUpdateHandler : IUpdateHandler
             UpdateType.Message => MessageHandlerAsync(botClient,update.Message,cancellationToken),
             UpdateType.InlineQuery => throw new NotImplementedException(),
             UpdateType.ChosenInlineResult => throw new NotImplementedException(),
-            UpdateType.CallbackQuery => throw new NotImplementedException(),
+            UpdateType.CallbackQuery => CallbackQueryHandler(botClient, update.CallbackQuery, cancellationToken),
             UpdateType.EditedMessage => MessageHandlerAsync(botClient,update.EditedMessage,cancellationToken,true),
             UpdateType.ChannelPost => throw new NotImplementedException(),
             UpdateType.EditedChannelPost => throw new NotImplementedException(),
@@ -46,18 +46,17 @@ public partial class BotUpdateHandler : IUpdateHandler
             UpdateType.MyChatMember => throw new NotImplementedException(),
             UpdateType.ChatMember => throw new NotImplementedException(),
             UpdateType.ChatJoinRequest => throw new NotImplementedException(),
-            UpdateType.Unknown => throw new NotImplementedException()
+            UpdateType.Unknown => throw new NotImplementedException(),
+            _ => throw new ArgumentOutOfRangeException()
         };
-        
+
         try
         {
-
+            await handlers;
         }
-        catch 
+        catch (Exception exception)
         {
-
+            await HandlePollingErrorAsync(botClient, exception, cancellationToken);
         }
-
-        return Task.CompletedTask;
     }
 }
