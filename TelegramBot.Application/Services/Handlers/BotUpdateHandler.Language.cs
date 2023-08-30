@@ -28,7 +28,5 @@ public partial class BotUpdateHandler
             replyMarkup: inlineKeyboard,
             cancellationToken: cancellation
         );
-        
-        await Task.FromCanceled(cancellation);
     }
 }

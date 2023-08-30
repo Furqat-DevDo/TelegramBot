@@ -10,42 +10,31 @@ public partial class BotUpdateHandler
         CallbackQuery message,
         CancellationToken cancellation)
     {
-        {
-            CallbackQuery callbackQuery = message;
-            await bot.AnswerCallbackQueryAsync(
-                callbackQuery.Id,
-                $"Received {callbackQuery.Data}"
-            );
+        {     
+            var resMessage = string.Empty;
 
-            switch (callbackQuery.Data)
+            switch (message.Data)
             {
                 case "uz":
-                    await bot.SendTextMessageAsync(
-                        chatId: message.From.Id,
-                        text: "Siz uzbek tilini tanladiz!"
-                        );
-                    await MenuBotUz(bot, callbackQuery, cancellation);
+                    await MenuBotUz(bot, message, cancellation);
+                    resMessage = "O'zbek tilini tanladingiz";
                     break;
 
                 case "ru":
-                    await bot.SendTextMessageAsync(
-                        chatId: message.From.Id,
-                        text: "Вы выбрали русский язык!"
-                        );
-                    await MenuBotRu(bot, callbackQuery, cancellation);
+                    await MenuBotRu(bot, message, cancellation);
+                    resMessage = "Вы выбрали Русский язык";
                     break;
                 case "eng":
-                    await bot.SendTextMessageAsync(
-                        chatId: message.From.Id,
-                        text: "You have chosen English!"
-                        );
-                    await MenuBotEng(bot, callbackQuery, cancellation);
+                    await MenuBotEng(bot, message, cancellation);
+                    resMessage = "You chose English language";
                     break;
                 default:
                     throw new NotImplementedException();
             }
-        }
 
-        await Task.FromCanceled(cancellation);
+            await bot.AnswerCallbackQueryAsync(
+                message.Id,
+                resMessage);
+        }
     }
 }

@@ -18,7 +18,7 @@ public partial class BotUpdateHandler
         if (update?.Text == "/start" || update?.Text == "/language")
         {
             await LanguageHandler(botClient, update, cancellationToken);
-            await Task.FromCanceled(cancellationToken);
+            return;
         }
             
 
