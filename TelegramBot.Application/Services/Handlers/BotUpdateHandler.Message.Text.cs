@@ -15,13 +15,15 @@ public partial class BotUpdateHandler
         if (update is null)
             throw new ArgumentNullException(nameof(update));
 
-        if (update?.Text == "/start" || update?.Text == "/language")
+        if (update?.Text == "/start" || 
+            update?.Text == "Tilni o'zgartirsh" ||
+            update?.Text == "Изменить язык" ||
+            update?.Text == "Change language")
         {
             await LanguageHandler(botClient, update, cancellationToken);
             return;
         }
             
-
         var chatId = update.Chat.Id;
 
         if (isEdited)
