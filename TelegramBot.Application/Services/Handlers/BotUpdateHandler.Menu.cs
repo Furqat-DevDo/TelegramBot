@@ -22,7 +22,7 @@ public partial class BotUpdateHandler
                 },
                 new []
                 {
-                    new KeyboardButton("Musiqa"),
+                    new KeyboardButton("Musiqa\ud83c\udfbc"),
                     new KeyboardButton("Video")
                 }
             })
@@ -54,7 +54,7 @@ public partial class BotUpdateHandler
                 },
                 new []
                 {
-                    new KeyboardButton("Музыка"),
+                    new KeyboardButton("Музыка\ud83c\udfbc"),
                     new KeyboardButton("Bидео")
                 }
             })
@@ -86,7 +86,7 @@ public partial class BotUpdateHandler
                 },
                 new []
                 {
-                    new KeyboardButton("Music"),
+                    new KeyboardButton("Music\ud83c\udfbc"),
                     new KeyboardButton("Video")
                 }
             })

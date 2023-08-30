@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using Telegram.Bot.Types;
 using Telegram.Bot;
+using Telegram.Bot.Types.Enums;
+using TelegramBot.Application.Services.Logics;
 
 namespace TelegramBot.Application.Services.Handlers;
 
@@ -15,35 +17,34 @@ public partial class BotUpdateHandler
         if (update is null)
             throw new ArgumentNullException(nameof(update));
 
-        if (update?.Text == "/start" || 
-            update?.Text == "Tilni o'zgartirsh" ||
-            update?.Text == "Изменить язык" ||
-            update?.Text == "Change language")
+        Task? tasks;
+        switch (update.Text)
         {
-            await LanguageHandler(botClient, update, cancellationToken);
-            return;
+            
+            case "/start" or "Tilni o'zgartirsh" or "Изменить язык" or "Change language":
+                tasks = LanguageHandler(botClient, update, cancellationToken);
+                break;
+            case "Music\ud83c\udfbc" or "Музыка\ud83c\udfbc" or "Musiqa\ud83c\udfbc":
+                tasks = MusicHandlerLogic.MusicSearcher(botClient, update, cancellationToken);
+                break;
+
+             default:
+                 tasks = Task.CompletedTask;
+                 break;
         }
 
-        if (update is not  null)
+        if (update.ReplyToMessage is not null && update.ReplyToMessage.Text.Contains("nomini kiriting."))
         {
-            var chatId = update.Chat.Id;
-
-            if (isEdited)
-            {
-                await botClient.SendTextMessageAsync(
-                    chatId,
-                    $"Siz quyidagi habarni o'zgartirdingiz :{update.Text} {update.MessageId}",
-                    cancellationToken: cancellationToken);
-            }
-            else
-            {
-                await botClient.SendTextMessageAsync(
-                    chatId,
-                    $"Salom :{update.From?.Username}",
-                    cancellationToken: cancellationToken);
-            }
+            await MusicHandlerLogic.SearchMusic(botClient, update, cancellationToken);
         }
 
-        _logger.LogInformation($"Bot Text habarni jo'natdi {update?.From?.Username}");
+        try
+        {
+            await tasks;
+        }
+        catch (Exception e)
+        {
+            await HandlePollingErrorAsync(botClient, e, cancellationToken);
+        }
     }
 }
