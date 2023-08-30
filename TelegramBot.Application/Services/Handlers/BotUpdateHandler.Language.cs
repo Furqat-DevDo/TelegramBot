@@ -11,9 +11,6 @@ public partial class BotUpdateHandler
         Message? message,
         CancellationToken cancellation)
     {
-        if (message?.Text != "/start" && message?.Text != "/language")
-            Task.FromCanceled(cancellation);
-
         var inlineKeyboard = new InlineKeyboardMarkup(
             new[]
             {
@@ -31,5 +28,7 @@ public partial class BotUpdateHandler
             replyMarkup: inlineKeyboard,
             cancellationToken: cancellation
         );
+        
+        await Task.FromCanceled(cancellation);
     }
 }

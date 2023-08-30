@@ -45,5 +45,7 @@ public partial class BotUpdateHandler
                     throw new NotImplementedException();
             }
         }
+
+        await Task.FromCanceled(cancellation);
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Telegram.Bot.Types;
 using Telegram.Bot;
-using Telegram.Bot.Types.ReplyMarkups;
 
 namespace TelegramBot.Application.Services.Handlers;
 
@@ -16,7 +15,12 @@ public partial class BotUpdateHandler
         if (update is null)
             throw new ArgumentNullException(nameof(update));
 
-        LanguageHandler(botClient, update, cancellationToken);
+        if (update?.Text == "/start" || update?.Text == "/language")
+        {
+            await LanguageHandler(botClient, update, cancellationToken);
+            await Task.FromCanceled(cancellationToken);
+        }
+            
 
         var chatId = update.Chat.Id;
 
