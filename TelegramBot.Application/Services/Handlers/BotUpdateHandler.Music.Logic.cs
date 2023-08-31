@@ -1,36 +1,34 @@
-﻿using SpotifyAPI.Web;
+using SpotifyAPI.Web;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
-namespace TelegramBot.Application.Services.Logics;
+namespace TelegramBot.Application.Services.Handlers;
 
-public static class MusicHandlerLogic
+public partial class BotUpdateHandler
 {
-    public static  async Task MusicSearcher(
-        ITelegramBotClient botClient, 
-        Message update, 
+    public async Task MusicSearcher(
+        ITelegramBotClient botClient,
+        Message update,
         CancellationToken cancellationToken)
     {
         await botClient.SendTextMessageAsync(update.Chat.Id,
             "Qo'shiqchi nomini kiriting.",
-            cancellationToken:cancellationToken);
+            cancellationToken: cancellationToken);
 
     }
 
-    public  static async Task SearchMusic(ITelegramBotClient botClient, Message text, CancellationToken cancellationToken)
+    public async Task SearchMusic(ITelegramBotClient botClient, Message text, CancellationToken cancellationToken)
     {
-        string SPOTIFY_CLIENT_ID = "8bb566b992bd4a559ae7d3eb50e04014";
-        string SPOTIFY_CLIENT_SECRET = "ebcb941578824d79bdc31c3fdbbf6f0e";
-
+        var settings = _options.Value ?? throw new ArgumentNullException(nameof(_options));
         var spotifyConfig = SpotifyClientConfig.CreateDefault()
         .WithAuthenticator(
-            new ClientCredentialsAuthenticator(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET));
+            new ClientCredentialsAuthenticator(settings.ClientId, settings.ClientSecret));
 
         var spotify = new SpotifyClient(spotifyConfig);
 
         var searchItems = await spotify.Search.Item(new SearchRequest(SearchRequest.Types.Track, text.Text));
 
-       
+
         if (searchItems.Tracks?.Items?.Count <= 0)
         {
             await botClient.SendTextMessageAsync(text.Chat.Id, "No track found.");

@@ -1,8 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
-using Telegram.Bot.Types;
+﻿using Telegram.Bot.Types;
 using Telegram.Bot;
-using Telegram.Bot.Types.Enums;
-using TelegramBot.Application.Services.Logics;
 
 namespace TelegramBot.Application.Services.Handlers;
 
@@ -25,7 +22,7 @@ public partial class BotUpdateHandler
                 tasks = LanguageHandler(botClient, update, cancellationToken);
                 break;
             case "Music\ud83c\udfbc" or "Музыка\ud83c\udfbc" or "Musiqa\ud83c\udfbc":
-                tasks = MusicHandlerLogic.MusicSearcher(botClient, update, cancellationToken);
+                tasks = MusicSearcher(botClient, update, cancellationToken);
                 break;
 
              default:
@@ -35,7 +32,7 @@ public partial class BotUpdateHandler
 
         if (update.ReplyToMessage is not null && update.ReplyToMessage.Text.Contains("nomini kiriting."))
         {
-            await MusicHandlerLogic.SearchMusic(botClient, update, cancellationToken);
+            await SearchMusic(botClient, update, cancellationToken);
         }
 
         try

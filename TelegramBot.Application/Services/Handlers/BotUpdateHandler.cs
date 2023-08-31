@@ -1,18 +1,21 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using TelegramBot.Application.Services.Options;
 
 namespace TelegramBot.Application.Services.Handlers;
 
 public partial class BotUpdateHandler : IUpdateHandler
 {
     private readonly ILogger<BotUpdateHandler> _logger;
-
-    public BotUpdateHandler(ILogger<BotUpdateHandler> logger)
+    private readonly IOptions<SpotifyOptions> _options;
+    public BotUpdateHandler(ILogger<BotUpdateHandler> logger, IOptions<SpotifyOptions> options)
     {
         _logger = logger;
+        _options = options;
     }
 
     public Task HandlePollingErrorAsync(ITelegramBotClient botClient, 
