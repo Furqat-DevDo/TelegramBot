@@ -30,11 +30,6 @@ public partial class BotUpdateHandler
                     break;
             }
 
-            if (message?.Message != null)
-                await bot.EditMessageReplyMarkupAsync(message.Id,
-                    message.Message.MessageId,
-                    null, cancellation);
-
             if (message is not  null)
                 await bot.AnswerCallbackQueryAsync(
                     message.Id!,
