@@ -1,4 +1,5 @@
-﻿using Telegram.Bot;
+﻿using SpotifyAPI.Web;
+using Telegram.Bot;
 using Telegram.Bot.Types;
 
 namespace TelegramBot.Application.Services.Logics;
@@ -18,24 +19,27 @@ public static class MusicHandlerLogic
 
     public  static async Task SearchMusic(ITelegramBotClient botClient, Message text, CancellationToken cancellationToken)
     {
-        var client = new HttpClient();
-        var request = new HttpRequestMessage
-        {
-            Method = HttpMethod.Get,
-            RequestUri = new Uri($"https://deezerdevs-deezer.p.rapidapi.com/search?q={text.Text}"),
-            Headers =
-            {
-                { "X-RapidAPI-Key", "12627086e7msh4966fd7c187df4bp16e572jsn2f3576ea8b75" },
-                { "X-RapidAPI-Host", "deezerdevs-deezer.p.rapidapi.com" },
-            },
-        };
+        string SPOTIFY_CLIENT_ID = "8bb566b992bd4a559ae7d3eb50e04014";
+        string SPOTIFY_CLIENT_SECRET = "ebcb941578824d79bdc31c3fdbbf6f0e";
 
-        using var response = await client.SendAsync(request, cancellationToken);
-        response.EnsureSuccessStatusCode();
-        var responseBody = await response.Content.ReadAsStringAsync(cancellationToken);
-        
-         // TODO : Change Format or Method
-        await botClient.SendTextMessageAsync(text.Chat.Id,
-            responseBody, text.MessageId, cancellationToken: cancellationToken);
+        var spotifyConfig = SpotifyClientConfig.CreateDefault()
+        .WithAuthenticator(
+            new ClientCredentialsAuthenticator(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET));
+
+        var spotify = new SpotifyClient(spotifyConfig);
+
+        var searchItems = await spotify.Search.Item(new SearchRequest(SearchRequest.Types.Track, text.Text));
+
+       
+        if (searchItems.Tracks?.Items?.Count <= 0)
+        {
+            await botClient.SendTextMessageAsync(text.Chat.Id, "No track found.");
+        }
+        else
+        {
+            var track = searchItems.Tracks?.Items?[0];
+            var responseMessage = $"Track: {track?.Name}, Artist: {track?.Artists[0].Name}, Album: {track?.Album.Name}";
+            await botClient.SendTextMessageAsync(text.Chat.Id, responseMessage);
+        }
     }
 }
