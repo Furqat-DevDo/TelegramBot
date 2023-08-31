@@ -17,7 +17,9 @@ public partial class BotUpdateHandler
 
     }
 
-    public async Task SearchMusic(ITelegramBotClient botClient, Message text, CancellationToken cancellationToken)
+    public async Task SearchMusic(ITelegramBotClient botClient, 
+        Message text, 
+        CancellationToken cancellationToken)
     {
         var settings = _options.Value ?? throw new ArgumentNullException(nameof(_options));
         var spotifyConfig = SpotifyClientConfig.CreateDefault()
@@ -26,18 +28,27 @@ public partial class BotUpdateHandler
 
         var spotify = new SpotifyClient(spotifyConfig);
 
-        var searchItems = await spotify.Search.Item(new SearchRequest(SearchRequest.Types.Track, text.Text));
+        var searchItems = await spotify.Search.Item(new SearchRequest(SearchRequest.Types.Track, 
+            text.Text)
+        {
+            Limit = 10
+        }, cancellationToken);
+
+        
 
 
         if (searchItems.Tracks?.Items?.Count <= 0)
         {
-            await botClient.SendTextMessageAsync(text.Chat.Id, "No track found.");
+            await botClient.SendTextMessageAsync(text.Chat.Id, "No track found.", cancellationToken: cancellationToken);
         }
         else
         {
-            var track = searchItems.Tracks?.Items?[0];
-            var responseMessage = $"Track: {track?.Name}, Artist: {track?.Artists[0].Name}, Album: {track?.Album.Name}";
-            await botClient.SendTextMessageAsync(text.Chat.Id, responseMessage);
+            
+            foreach (var track in searchItems.Tracks?.Items)
+            {
+                await botClient.SendTextMessageAsync(text.Chat.Id, track.ExternalUrls["spotify"],
+                    cancellationToken: cancellationToken);
+            }
         }
     }
 }
