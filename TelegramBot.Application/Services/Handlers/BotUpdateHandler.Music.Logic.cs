@@ -46,8 +46,9 @@ public partial class BotUpdateHandler
             
             foreach (var track in searchItems.Tracks?.Items)
             {
-                await botClient.SendTextMessageAsync(text.Chat.Id, track.ExternalUrls["spotify"],
+                await botClient.SendTextMessageAsync(text.Chat.Id, $"{track.ExternalUrls["spotify"]}",
                     cancellationToken: cancellationToken);
+                await botClient.SendTextMessageAsync(text.Chat.Id, track.PreviewUrl);
             }
         }
     }
