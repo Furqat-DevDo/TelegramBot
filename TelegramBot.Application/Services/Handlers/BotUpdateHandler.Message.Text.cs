@@ -26,6 +26,9 @@ public partial class BotUpdateHandler
                 break;
 
              default:
+                 await DownloadFromYoutube(update.Text,
+                     botClient,
+                     update.Chat.Id);
                  tasks = Task.CompletedTask;
                  break;
         }

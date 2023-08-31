@@ -30,11 +30,10 @@ public partial class BotUpdateHandler
                     break;
             }
 
-            if (message is not  null)
-                await bot.AnswerCallbackQueryAsync(
-                    message.Id!,
-                    resMessage,
-                    cancellationToken: cancellation);
+            await bot.AnswerCallbackQueryAsync(
+                message?.Id!,
+                resMessage,
+                cancellationToken: cancellation);
         }
     }
 }

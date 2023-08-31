@@ -1,6 +1,7 @@
 using SpotifyAPI.Web;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using TelegramBot.Application.Services.CLients;
 
 namespace TelegramBot.Application.Services.Handlers;
 
@@ -51,5 +52,16 @@ public partial class BotUpdateHandler
                 await botClient.SendTextMessageAsync(text.Chat.Id, track.PreviewUrl);
             }
         }
+    }
+
+    public async Task DownloadFromYoutube(string Url,ITelegramBotClient bot,long chatId)
+    {
+        var client = new YouTubeClient();
+
+        var mp3Url = await client.ReturnDownloadLink(Url);
+
+        await bot.SendAudioAsync(
+            chatId: chatId,
+            audio: InputFile.FromUri(mp3Url));
     }
 }
