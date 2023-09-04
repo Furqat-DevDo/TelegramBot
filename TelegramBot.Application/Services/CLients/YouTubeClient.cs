@@ -23,7 +23,8 @@ public class YouTubeClient : HttpClient
         response.EnsureSuccessStatusCode();
 
         var body = await response.Content.ReadAsStringAsync();
-        var searchResult = JsonSerializer.Deserialize<SearchResult>(body);
+        var searchResult = JsonSerializer.Deserialize<SearchResult>(body)
+            ?? throw new ArgumentNullException();
 
         return searchResult.Link;
     }
@@ -36,12 +37,12 @@ public class SearchResult
     public required string Title { get; set; }
 
     [JsonPropertyName("link")]
-    public string Link { get; set; }
+    public required string Link { get; set; }
     
     [JsonPropertyName("length")]
-    public string Length { get; set; }
+    public required string Length { get; set; }
      
     [JsonPropertyName("size")]
-    public string Size { get; set; }
+    public required string Size { get; set; }
     
 }
