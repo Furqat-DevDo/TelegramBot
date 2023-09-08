@@ -12,7 +12,8 @@ public partial class BotUpdateHandler : IUpdateHandler
 {
     private readonly ILogger<BotUpdateHandler> _logger;
     private readonly IOptions<SpotifyOptions> _options;
-    public BotUpdateHandler(ILogger<BotUpdateHandler> logger, IOptions<SpotifyOptions> options)
+    public BotUpdateHandler(ILogger<BotUpdateHandler> logger, 
+        IOptions<SpotifyOptions> options)
     {
         _logger = logger;
         _options = options;
